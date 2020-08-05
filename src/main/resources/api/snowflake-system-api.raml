@@ -1,0 +1,60 @@
+#%RAML 1.0
+title: snowflake-system-api
+description: collection of System APIs for snowflake
+version: v1
+protocols: [HTTP]
+mediaType: 
+  - application/json
+/get:
+  description: This endpoint is used to get all Records from snowflake
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include examples/get-snowflake-records.raml
+      400:
+        body:
+          application/json:
+            example: !include examples/error-response400.raml
+      404:
+        body:
+          application/json:
+            example: !include examples/error-response404.raml
+      500:
+        body:
+          application/json:
+            example: !include examples/error-response500.raml
+/insert:
+  description: This endpoint is used to insert record
+  post:
+    body:
+      application/json:
+        example: !include examples/post-snowflake-record.raml
+    responses:
+      201:
+        body:
+          application/json:
+            example: |
+              {"Message": "record has inserted"}
+      400:
+        body:
+          application/json:
+            example: !include examples/error-response400.raml
+      404:
+        body:
+          application/json:
+            example: !include examples/error-response404.raml
+      500:
+        body:
+          application/json:
+            example: !include examples/error-response500.raml
+          
+
+
+
+              
+              
+
+              
+              

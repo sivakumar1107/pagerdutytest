@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="get-snowflake-implementation-flow" doc:id="5df3b57a-fdbc-4a7f-b62b-9ef5ce2ab878" >
+		<logger level="INFO" doc:name="LOG INFO SnowFlake Get Implementation flow started" doc:id="b14a1aa7-5328-49ff-9300-09e0f03009b6" message="get-snowflake-implementation-flow started"/>
+		<db:select doc:id="d00976c5-f8e1-4dba-be14-11dd599f185c" doc:name="Select Operation for SnowFlake DB" config-ref="Database_Config">
+			<db:sql >Select * from &quot;DEMO_DB&quot;.&quot;PUBLIC&quot;.&quot;EMPLOYEEINFO&quot; </db:sql>
+		</db:select>
+		<ee:transform doc:name="DW SET Payload to Json" doc:id="6cc0aaf2-279d-420e-804f-d578b88bfb5d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="LOG INFO SnowFlake Get Implementation flow ended" doc:id="7a374294-8633-4620-b8b0-07390ca43ff2" message="get-snowflake-implementation-flow ended"/>
+	</flow>
+	<flow name="insert-snowflake-implementation-flow" doc:id="c7cdae83-957e-4e79-ade8-21fc456a926e" >
+		<logger level="INFO" doc:name="LOG INFO SnowFlake Insert Implementation flow started" doc:id="765df7f7-7ac6-49c9-84bc-ff78a4731610" />
+		<db:insert doc:name="Insert Operation for SnowFlake DB" doc:id="605823ce-d93d-44f0-b184-9f5509240060" config-ref="Database_Config">
+			<db:sql >INSERT INTO &quot;DEMO_DB&quot;.&quot;PUBLIC&quot;.&quot;EMPLOYEEINFO&quot; (&quot;EMPID&quot;,&quot;EMPNAME&quot;,&quot;EMPSALARY&quot;) Values (:EMPID,:EMPNAME,:EMPSALARY)</db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	EMPID:payload.EmpId,
+	EMPNAME:payload.EmpName,
+	EMPSALARY:payload.EmpSalary
+}]]]></db:input-parameters>
+		</db:insert>
+		<ee:transform doc:name="DW SET Payload to Json" doc:id="1dc51dfd-2d8d-44cb-811c-4d0642a0666d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"RowsInserted":payload.affectedRows
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="LOG INFO SnowFlake Insert Implementation flow ended" doc:id="c965e033-168b-42ae-b150-265ea61b0338" message="insert-snowflake-implementation-flow ended"/>
+	</flow>
+</mule>

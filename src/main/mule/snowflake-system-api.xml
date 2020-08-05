@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
+    <http:listener-config name="snowflake-system-api-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config>
+    <apikit:config name="snowflake-system-api-config" api="snowflake-system-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <flow name="snowflake-system-api-main">
+        <http:listener config-ref="snowflake-system-api-httpListenerConfig" path="/api/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="snowflake-system-api-config" />
+        <error-handler ref="Error-Handler" />
+    </flow>
+    <flow name="snowflake-system-api-console">
+        <http:listener config-ref="snowflake-system-api-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="snowflake-system-api-config" />
+        <error-handler>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="get:\get:snowflake-system-api-config">
+		<logger level="INFO" doc:name="LOG INFO SnowFlake Get Flow Started" doc:id="81a380c4-7bed-4a11-9e80-25d6de575118" message="get:\get:snowflake-system-api-config flow started"/>
+		<flow-ref doc:name="get-snowflake-implementation-flow" doc:id="d020393d-3231-4e94-8937-877dd8e83b68" name="get-snowflake-implementation-flow"/>
+		<logger level="INFO" doc:name="LOG INFO SnowFlake Get Flow Ended" doc:id="6a4ef436-7fa8-4544-84f0-804286917e2f" message="get:\get:snowflake-system-api-config flow ended"/>
+    </flow>
+    <flow name="post:\insert:application\json:snowflake-system-api-config">
+		<logger level="INFO" doc:name="LOG INFO SnowFlake Insert Flow Started" doc:id="b9a988d5-8000-4c03-a20c-1c79e3dd5697" message="post:\insert:application\json:snowflake-system-api-config flow started"/>
+		<flow-ref doc:name="insert-snowflake-implementation-flow" doc:id="5669486a-e1e9-458b-b7a0-05e6962af9b2" name="insert-snowflake-implementation-flow"/>
+		<logger level="INFO" doc:name="LOG INFO SnowFlake Insert Flow Ended" doc:id="4e4faf7e-699f-4a08-8f77-ec346280f44e" message="post:\insert:application\json:snowflake-system-api-config flow ended"/>
+    </flow>
+</mule>

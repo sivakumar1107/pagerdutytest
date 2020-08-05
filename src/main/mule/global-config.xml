@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+	<configuration doc:name="Configuration" doc:id="6f59b05c-e169-4c2d-aecb-390cc7166678" defaultErrorHandler-ref="Error-Handler" />
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="c6789e9f-b9c5-4b84-9cee-601264781cee" >
+		<db:generic-connection url="jdbc:snowflake://pagerduty.snowflakecomputing.com/?warehouse=DEMO_WH&amp;db=DEMO_DB&amp;schema=public" driverClassName="net.snowflake.client.jdbc.SnowflakeDriver" user="apisero_poc" password="${secure::snowflake.password}" />
+	</db:config>
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="02e80d69-4fd1-4192-9af0-471a4da24138" file="secure-dev.properties" key="snowflake" >
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
+</mule>
