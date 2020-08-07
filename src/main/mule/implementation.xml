@@ -7,7 +7,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<flow name="get-snowflake-implementation-flow" doc:id="5df3b57a-fdbc-4a7f-b62b-9ef5ce2ab878" >
 		<logger level="INFO" doc:name="LOG INFO SnowFlake Get Implementation flow started" doc:id="b14a1aa7-5328-49ff-9300-09e0f03009b6" message="get-snowflake-implementation-flow started"/>
-		<db:select doc:id="d00976c5-f8e1-4dba-be14-11dd599f185c" doc:name="Select Operation for SnowFlake DB" config-ref="Database_Config">
+		<db:select doc:id="d00976c5-f8e1-4dba-be14-11dd599f185c" doc:name="Select Operation for SnowFlake Db" config-ref="Database_Config">
 			<db:sql >Select * from &quot;DEMO_DB&quot;.&quot;PUBLIC&quot;.&quot;EMPLOYEEINFO&quot; </db:sql>
 		</db:select>
 		<ee:transform doc:name="DW SET Payload to Json" doc:id="6cc0aaf2-279d-420e-804f-d578b88bfb5d" >
