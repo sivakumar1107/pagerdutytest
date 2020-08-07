@@ -6,6 +6,6 @@ output application/json
     {
         transactionId: correlationId,
         errorCode: "APIKIT-406-NOT-ACCEPTABLE-ERROR",
-        errorMessage: "Encountered an error while processing a lead request. Not acceptable error"
+        errorMessage: "Encountered an Error while processing a lead request. Not acceptable error"
     }]
 }
