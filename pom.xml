@@ -26,7 +26,16 @@
                             <groupId>com.mycompany</groupId>
                             <artifactId>snowflake-jdbc-3.9.2</artifactId>
                         </sharedLibrary>
-                    </sharedLibraries>
+                 </sharedLibraries>
+                <cloudHubDeployement>
+                <username>sivaAug07</username>
+                <password>sivaAug07</password>
+                <environment>Sandbox</environment>
+                <workers>1</workers>
+                <workerType>Micro</workerType>
+                <applicationName>snowflake-system-api</applicationName>
+                <muleVersion>4.2.2</muleVersion>
+                </cloudHubDeployement>
                 </configuration>
 			</plugin>
 		</plugins>
