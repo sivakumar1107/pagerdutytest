@@ -28,6 +28,7 @@
                         </sharedLibrary>
                  </sharedLibraries> 
                 <cloudHubDeployement>
+                <uri>https://anypoint.mulesoft.com/</uri>
                 <username>sivaAug07</username>
                 <password>sivaAug07</password>
                 <environment>Sandbox</environment>
