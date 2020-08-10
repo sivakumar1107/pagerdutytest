@@ -27,6 +27,7 @@
                             <artifactId>snowflake-jdbc-3.9.2</artifactId>
                         </sharedLibrary>
                  </sharedLibraries> 
+                 
                 <cloudHubDeployement>
                 <uri>https://anypoint.mulesoft.com/</uri>
                 <username>sivaAug07</username>
