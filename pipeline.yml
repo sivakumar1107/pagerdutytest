@@ -1,0 +1,11 @@
+steps:
+  - label: "🔨"
+    command: "scripts/tests"
+
+  - wait
+
+  - label: "🚀"
+    command: "scripts/deploy"
+    if: build.branch == 'master'
+    concurrency: 1
+    concurrency_group: "my-app-deploy"
